@@ -9,9 +9,10 @@
 
 module.exports = (robot) ->
 
-  slack = robot.adapter.client
-  slack.on 'raw_message', (message) ->
+#  slack = robot.adapter.client
+#  slack.on 'raw_message', (message) ->
+  robot.on 'raw_message', (message) ->
     if message?.type == 'channel_created'
       return if typeof robot?.send isnt 'function'
       robot.send message
-      robot.send {room: "general"}, "新しいチャンネル <##{message.channel.id}> が作られたぜ！ ひゃっふーうっ！！"
+      robot.send {room: "general"}, "新しいチャンネル <##{message.channel.id}> が作られたぜ！ さんきゅー <@#{message.channel.creator}>！！ ひゃっふーうっ！！"

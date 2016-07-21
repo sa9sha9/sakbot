@@ -12,7 +12,7 @@ module.exports = (robot) ->
 #  slack = robot.adapter.client
 #  slack.on 'raw_message', (message) ->
 #  robot.on 'raw_message', (message) ->
-  robot.adapter.client?.on? 'raw_message', (msg) ->
+  robot.adapter.client?.on? 'raw_message', (message) ->
     if message?.type == 'channel_created'
 #      return if typeof robot?.send isnt 'function'
 #      robot.send message

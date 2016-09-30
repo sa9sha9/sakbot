@@ -14,4 +14,4 @@ module.exports = (robot) ->
   robot.adapter.client?.on? 'raw_message', (message) ->
     if message?.type == 'channel_created'
       return if typeof robot?.send isnt 'function'
-      robot.send {room: "general"}, "新しいチャンネル <##{message.channel.id}> が作られたぜ！ さんきゅー <@#{message.channel.creator}>！！ ひゃっふーうっ！！"
+      robot.send {room: "general"}, "New Channel <##{message.channel.id}> was created!! Thanks <@#{message.channel.creator}>!! Foo!!!"

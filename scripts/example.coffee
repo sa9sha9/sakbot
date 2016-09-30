@@ -11,7 +11,8 @@
 module.exports = (robot) ->
   robot.hear /sakbot test/i, (msg) ->
     robot.logger.info msg  #@@
-    msg.send msg #@@
+    robot.send {room: ''}, "hello"
+    console.log("done")
 
   # robot.hear /badger/i, (res) ->
   #   res.send "Badgers? BADGERS? WE DON'T NEED NO STINKIN BADGERS"

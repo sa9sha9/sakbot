@@ -40,11 +40,3 @@ module.exports = (robot) ->
   robot.hear /echo (.*)/i , (msg) ->
     envelope = {room: process.env.SEND_ROOM}
     robot.send envelope, "#{msg.match[1]}"
-
-  robot.listen(
-    (msg) ->
-      msg.text is 'emit'
-    (res) ->
-      res.send {room: 'random'}, "hey"
-  )
-

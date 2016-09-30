@@ -17,7 +17,7 @@
 
 
 module.exports = (robot) ->
-  envelop = room: "sak39_times"
+  envelope = room: "sak39_times"
 # Seconds: 0-59
 # Minutes: 0-59
 # Hours: 0-23
@@ -41,22 +41,11 @@ module.exports = (robot) ->
 
   robot.listen(
     (msg) ->
-#      msg.user.name is 'uran' and (new Date().getHours()) is 8
-      msg.user.name is 'saku'
+      msg.user.name is 'uran' and (new Date().getHours()) is 7
+#      msg.user.name is 'Shell' and msg.text is 'emit'
     (res) ->
-      tenki(robot, envelop, '100010')
-
-      robot.send envelop, 'もっと詳しく聞きたいですか？'
-      robot.hear '/yes/g', (msg) ->
-        console.log 'らじゃー'
-
-      setTimeout( () ->
-        robot.send envelop, "必要ないようですね。今日も１日頑張りましょう！"
-      , 5000)
+      tenki(robot, envelope, '100010')
   )
-
-  tenki(robot, 'sak39_times', '100010')
-
 
 tenki = (robot, envelope, city) ->
   request = robot.http('http://weather.livedoor.com/forecast/webservice/json/v1?city='+city).get()
@@ -69,8 +58,30 @@ tenki = (robot, envelope, city) ->
     msgs ="""
            ちなみに、#{json['location']['prefecture']} #{json['location']['city']}市の天気は「#{json['forecasts'][0]['telop']}」最高気温は #{json['forecasts'][1]['temperature']['max']['celsius']}度, 最低気温 #{json['forecasts'][1]['temperature']['min']['celsius']}度です。
       """
-    #    msgs = json['link']
-    #    msgs += '富山市の今日の天気は「' + json['forecasts'][0]['telop'] + '」'
-    #    msgs += '最高気温は ' + json['forecasts'][1]['temperature']['max']['celsius'] + '度、最低気温は ' + json['forecasts'][1]['temperature']['min']['celsius'] + '度です。'
-    #    robot.send envelope, msgs
     robot.send envelope, msgs
+
+    ### more detail ###
+#    robot.send envelope, 'もっと詳しく聞きたいですか？'
+#    flag = 0
+#    robot.hear '/yes/i', (msg) ->
+#      console.log 'らじゃー'
+#      robot.emit 'moreDetailTenki', robot, envelope
+#
+#    robot.on 'moreDetailTenki', (robot, envelope) ->
+#      robot.send envelope, "${json['description']['text']}"
+#      flag = 1
+#
+#    console.log 'robot: ', robot.listeners
+#
+#    setTimeout( () ->
+#      console.log 'enter'
+#      robot.events.removeListener 'moreDetailTenki', (robot, envelope) ->
+#        if flag == 0
+#          robot.send envelope, "必要ないようですね。"
+#        else
+#          robot.send envelope, "今日も１日頑張りましょう！"
+#      console.log 'robot: ', robot.listeners
+#    , 5000)
+
+
+

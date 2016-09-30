@@ -17,7 +17,7 @@
 
 
 module.exports = (robot) ->
-  envelope = room: "sak39_times"
+  envelope = room: process.env.SEND_ROOM
 # Seconds: 0-59
 # Minutes: 0-59
 # Hours: 0-23

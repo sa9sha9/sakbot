@@ -13,18 +13,16 @@
 request = require 'request'
 
 module.exports = (robot) ->
-  room = 'random'
-  robot.hear /location (.*)/, (msg) ->
-    request = robot.http("https://maps.googleapis.com/maps/api/geocode/json")
-    .query(address: msg.match[1])
-    .get()
-    request (err, res, body) ->
-      json = JSON.parse body
-      location = json['results'][0]['geometry']['location']
-      msg.send "#{location['lat']}, #{location['lng']}"
+#  robot.hear /location (.*)/, (msg) ->
+#    request = robot.http("https://maps.googleapis.com/maps/api/geocode/json")
+#    .query(address: msg.match[1])
+#    .get()
+#    request (err, res, body) ->
+#      json = JSON.parse body
+#      location = json['results'][0]['geometry']['location']
+#      msg.send "#{location['lat']}, #{location['lng']}"
 
-#  USER_LOCAL_API_KEY = process.env.USER_LOCAL_API_KEY
-  USER_LOCAL_API_KEY = '0976c26215868066b636'
+  USER_LOCAL_API_KEY = process.env.USER_LOCAL_API_KEY
   robot.respond /(.*)$/, (msg) ->
     robot.http("https://chatbot-api.userlocal.jp/api/chat")
     .query(message: msg.match[1], key:USER_LOCAL_API_KEY, bot_name: 'L2-T2', platform: 'slack', user_name: msg.message.user.name)
@@ -40,4 +38,13 @@ module.exports = (robot) ->
 
   ### echo ###
   robot.hear /echo (.*)/i , (msg) ->
-    robot.send room, "#{msg.match[1]}"
+    envelope = {room: process.env.SEND_ROOM}
+    robot.send envelope, "#{msg.match[1]}"
+
+  robot.listen(
+    (msg) ->
+      msg.text is 'emit'
+    (res) ->
+      res.send {room: 'random'}, "hey"
+  )
+

@@ -41,9 +41,16 @@ module.exports = (robot) ->
 
   robot.listen(
     (msg) ->
-      msg.user.name is 'uran' and (new Date().getHours()) is 7
+      # Dateインスタンスを生成(時差を考慮)
+      offset = 9
+      d = new Date();
+      nd = new Date(d.getTime() + (3600000 * offset))
+
+      msg.user.name is 'uran' and (nd.getHours()) is 7
+#      msg.user.name is 'saku' and (nd.getHours()) is 13
 #      msg.user.name is 'Shell' and msg.text is 'emit'
     (res) ->
+      console.log 'tenki emit'
       tenki(robot, envelope, '100010')
   )
 

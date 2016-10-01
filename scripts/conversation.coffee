@@ -37,6 +37,6 @@ module.exports = (robot) ->
 
 
   ### echo ###
-  robot.hear /echo (.*)/i , (msg) ->
+  robot.hear /echo random (.*)/i , (msg) ->
     envelope = {room: process.env.SEND_ROOM}
     robot.send envelope, "#{msg.match[1]}"

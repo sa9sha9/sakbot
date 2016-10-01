@@ -46,9 +46,12 @@ module.exports = (robot) ->
       d = new Date();
       nd = new Date(d.getTime() + (3600000 * offset))
 
-      msg.user.name is 'uran' and (nd.getHours()) is 7
+      regex = /名古屋(.*)/
+      #ユーザ名が'uran'でAM7時台に発言して、なおかつその発言に'名古屋'が含まれているもの
+      msg.user.name is 'uran' and (nd.getHours()) is 7 and regex.test(msg.text)
 #      msg.user.name is 'saku' and (nd.getHours()) is 13
-#      msg.user.name is 'Shell' and msg.text is 'emit'
+#      pattern = /(.*)emit(.*)/
+#      msg.user.name is 'Shell' and pattern.test(msg.text)
     (res) ->
       console.log 'tenki emit'
       tenki(robot, envelope, '100010')

@@ -11,6 +11,9 @@
 #
 # Thanks:
 #  https://github.com/sak39/sacbot.git
+cheerio = require 'cheerio-httpcli'
+request = require 'request'
+
 module.exports = (robot) ->
   envelope = {room: process.env.SEND_ROOM}
 
@@ -22,15 +25,32 @@ module.exports = (robot) ->
     "なんという良記事！！",
     "これ以前に読んだことがあります。何度見ても勉強になるっす！",
     "私もこんな理路整然とした文章書いてみたいです..",
+    "初めて読みました！",
+    "あとで読んでみますね",
   ]
 
+  # フロントエンド
   robot.hear /http(?:s)?:\/\/(.*)$/i, (res) ->
     # res.random ->
     # function (items) {
     #   return items[Math.floor(Math.random() * items.length)];
     # }
-    res.send "@#{res.message.user.name}: #{res.random(reactions)}"
+    if /(.*)wikipedia(.*)/.test(res.match[1]) # wikipediaの時のみ
+      getTitleOfWikipedia(res.match[0], res)
+    else
+      res.send "@#{res.message.user.name}: #{res.random(reactions)}"
 
+  getTitleOfWikipedia = (url, res) ->
+    cheerio.fetch(url, (err, $, header) ->
+      res.send $('title').text()}
+    )
+
+
+
+
+
+
+  ### データベース操作 ###
   # add
   robot.hear /add reaction(?:\s)?(.*)?/i, (res) ->
     if res.match[1] is undefined
@@ -58,3 +78,4 @@ module.exports = (robot) ->
     reactions.map( (el, index, array) ->
       robot.send {room: res.message.user.name}, el
     )
+

@@ -68,10 +68,15 @@ module.exports = (robot) ->
     if msg.match[1] is undefined
       msg.send "?"
     else
-      reactions.push msg.match[1]
-      msg.send "記憶しました！"
-      # res.send envelope, hogeだと、envelopeも発言してしまう
-      robot.send {room: msg.message.user.name}, reactions #追加した本人のDMへ一覧を送信
+      addReaction(msg.match[1], (err, res) ->
+        if err
+          console.log("Adding ERROR: " + "Unexpected Error")
+        else
+          console.log("Adding: SUCCESS")
+          msg.send "記憶しました！"
+            # res.send envelope, hogeだと、envelopeも発言してしまう
+#          robot.send {room: msg.message.user.name}, reactions #追加した本人のDMへ一覧を送信
+      )
 
   # delete
   robot.hear /del reaction(?:\s)?(.*)?/i, (msg) ->
@@ -100,11 +105,11 @@ module.exports = (robot) ->
         robot.send {room: msg.message.user.name}, "empty" #個人チャットに送信
       else
         res.map( (el, index, array) ->
-          robot.send {room: msg.message.user.name}, el
+          robot.send {room: msg.message.user.name}, el #個人チャットに送信
         )
     )
 
-  ### REDIS ###
+  ### REDIS Functions ###
   #get
   getReactions = (callback) ->
     client.lrange(key, 0, -1, callback)
@@ -124,32 +129,30 @@ module.exports = (robot) ->
 
 
   ### Test ###
-  getCallback = (err, res) ->
-    if err
-      console.log("Getting ERROR: " + err)
-    else if res.length is 0
-      console.log("Getting ERROR: " + "empty")
-    else
-      console.dir(res)
-
-  addCallback = (err, res) ->
-    console.log(err)
-    console.log(res)
-    if res > 0  #この条件がSUCCESSであるとは限らない
-      console.log("Adding: SUCCESS")
-    else
-      console.log("Adding ERROR: " + "Unexpected Error")
-
-  removeTarget = 'aaa'
-  removeCallback = (err, res) ->
-    if err
-      console.log("Removing ERROR: " + err)
-    else
-      console.log("Removing: " + res)
+#  getCallback = (err, res) ->
+#    if err
+#      console.log("Getting ERROR: " + err)
+#    else if res.length is 0
+#      console.log("Getting ERROR: " + "empty")
+#    else
+#      console.dir(res)
+#
+#  addCallback = (err, res) ->
+#    if res > 0  #この条件がSUCCESSであるとは限らない
+#      console.log("Adding: SUCCESS")
+#    else
+#      console.log("Adding ERROR: " + "Unexpected Error")
+#
+#  removeTarget = 'aaa'
+#  removeCallback = (err, res) ->
+#    if err
+#      console.log("Removing ERROR: " + err)
+#    else
+#      console.log("Removing: " + res)
 
   ### calling ###
-  data = 'bbb'
-  getReactions(getCallback)
-  addReaction(data, addCallback)
-  removeReaction(removeTarget, removeCallback)
-  getReactions(getCallback)
+#  data = 'bbb'
+#  getReactions(getCallback)
+#  addReaction(data, addCallback)
+#  removeReaction(removeTarget, removeCallback)
+#  getReactions(getCallback)

@@ -34,19 +34,25 @@ module.exports = (robot) ->
   )
 
 
-  reactions = [
-    "なんすかコレ！めっちゃ面白いっすね！！",
-    "これは一見の価値ありですね！！",
-    "ためになります！",
-    "また一つ私は賢くなりました。ためになります。",
-    "なんという良記事！！",
-    "これ以前に読んだことがあります。何度見ても勉強になるっす！",
-    "私もこんな理路整然とした文章書いてみたいです..",
-    "初めて読みました！",
-    "あとで読んでみますね",
-  ]
+  ### REDIS Functions ###
+  #get
+  getReactions = (callback) ->
+    client.lrange(key, 0, -1, callback)
 
-  # フロントエンド
+  #add
+  addReaction = (reaction, callback) ->
+    client.rpush(key, reaction, callback)
+
+  #remove
+  removeReaction = (str, callback) ->
+    client.lrem(key, 1, str, callback)
+  #    index指定できるようになったら,以下を追加
+  #    client.lindex(key, index, (err, value) ->
+  #      if err?
+  #        client.lrem(key, 1, value, callback)
+  #    )
+
+  ### フロントエンド ###
   robot.hear /http(?:s)?:\/\/(.*)$/i, (msg) ->
     # res.random ->
     # function (items) {
@@ -63,6 +69,26 @@ module.exports = (robot) ->
     )
 
   ### データベース操作 ###
+  # Initial add
+  reactions = [
+    "なんすかコレ！めっちゃ面白いっすね！！",
+    "これは一見の価値ありですね！！",
+    "ためになります！",
+    "また一つ私は賢くなりました。ためになります。",
+    "なんという良記事！！",
+    "これ以前に読んだことがあります。何度見ても勉強になるっす！",
+    "私もこんな理路整然とした文章書いてみたいです..",
+    "初めて読みました！",
+    "あとで読んでみますね",
+  ]
+  reactions.map((el) ->
+    addReaction(el, (err, res) ->
+      if err
+        console.log("Initial Adding ERROR: Unexpected Error")
+      else
+        console.log("Initial Adding: SUCCESS")
+    )
+  )
   # add
   robot.hear /add reaction(?:\s)?(.*)?/i, (msg) ->
     if msg.match[1] is undefined
@@ -109,23 +135,6 @@ module.exports = (robot) ->
         )
     )
 
-  ### REDIS Functions ###
-  #get
-  getReactions = (callback) ->
-    client.lrange(key, 0, -1, callback)
-
-  #add
-  addReaction = (reaction, callback) ->
-    client.rpush(key, reaction, callback)
-
-  #remove
-  removeReaction = (str, callback) ->
-    client.lrem(key, 1, str, callback)
-#    index指定できるようになったら,以下を追加
-#    client.lindex(key, index, (err, value) ->
-#      if err?
-#        client.lrem(key, 1, value, callback)
-#    )
 
 
   ### Test ###

@@ -53,11 +53,8 @@ module.exports = (robot) ->
   #    )
 
   ### フロントエンド ###
+  # http(s)://
   robot.hear /http(?:s)?:\/\/(.*)$/i, (msg) ->
-    # res.random ->
-    # function (items) {
-    #   return items[Math.floor(Math.random() * items.length)];
-    # }
     if /(.*)wikipedia(.*)/.test(msg.match[1]) # wikipediaの時のみ
       getTitleOfWikipedia(msg.match[0], msg)
     else
@@ -105,8 +102,7 @@ module.exports = (robot) ->
         else
           console.log("Adding: SUCCESS")
           msg.send "記憶しました！"
-            # res.send envelope, hogeだと、envelopeも発言してしまう
-#          robot.send {room: msg.message.user.name}, reactions #追加した本人のDMへ一覧を送信
+          # res.send envelope, hogeだと、envelopeも発言してしまう
       )
 
   # delete
@@ -124,7 +120,6 @@ module.exports = (robot) ->
           else
             robot.send {room: msg.message.user.name}, "I don't know such a reaction."  #個人チャットに発言
       )
-#      resultIndex = reactions.indexOf(msg.match[1])
 
   # list
   robot.hear /l(?:i)?s(?:t)? reaction/i, (msg) ->

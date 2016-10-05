@@ -61,8 +61,11 @@ module.exports = (robot) ->
     if /(.*)wikipedia(.*)/.test(msg.match[1]) # wikipediaの時のみ
       getTitleOfWikipedia(msg.match[0], msg)
     else
-      msg.send "@#{msg.message.user.name}: #{msg.random(reactions)}"
+      getReactions((err, res) ->
+        msg.send "@#{msg.message.user.name}: #{msg.random(res)}"
+      )
 
+  # wikipediaのリンクが貼られた時に発火
   getTitleOfWikipedia = (url, msg) ->
     cheerio.fetch(url, (err, $, header) ->
       msg.send $('title').text()

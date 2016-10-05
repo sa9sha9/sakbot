@@ -69,26 +69,28 @@ module.exports = (robot) ->
     )
 
   ### データベース操作 ###
-  # Initial add
-  reactions = [
-    "なんすかコレ！めっちゃ面白いっすね！！",
-    "これは一見の価値ありですね！！",
-    "ためになります！",
-    "また一つ私は賢くなりました。ためになります。",
-    "なんという良記事！！",
-    "これ以前に読んだことがあります。何度見ても勉強になるっす！",
-    "私もこんな理路整然とした文章書いてみたいです..",
-    "初めて読みました！",
-    "あとで読んでみますね",
-  ]
-  reactions.map((el) ->
-    addReaction(el, (err, res) ->
-      if err
-        console.log("Initial Adding ERROR: Unexpected Error")
-      else
-        console.log("Initial Adding: SUCCESS")
+  # Initial add (万が一のとき用)
+  robot.hear /initial add reaction/i, (msg) ->
+    reactions = [
+      "なんすかコレ！めっちゃ面白いっすね！！",
+      "これは一見の価値ありですね！！",
+      "ためになります！",
+      "また一つ私は賢くなりました。ためになります。",
+      "なんという良記事！！",
+      "これ以前に読んだことがあります。何度見ても勉強になるっす！",
+      "私もこんな理路整然とした文章書いてみたいです..",
+      "初めて読みました！",
+      "あとで読んでみますね",
+    ]
+    reactions.map((el) ->
+      addReaction(el, (err, res) ->
+        if err
+          console.log("Initial Adding ERROR: Unexpected Error")
+        else
+          console.log("Initial Adding: SUCCESS")
+      )
     )
-  )
+
   # add
   robot.hear /add reaction(?:\s)?(.*)?/i, (msg) ->
     if msg.match[1] is undefined

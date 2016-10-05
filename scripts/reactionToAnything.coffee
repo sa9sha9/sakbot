@@ -78,12 +78,17 @@ module.exports = (robot) ->
     if msg.match[1] is undefined
       msg.send '?'
     else
-      resultIndex = reactions.indexOf(msg.match[1])
-      if resultIndex > 0
-        reactions.splice(resultIndex, 1)
-        robot.send {room: msg.message.user.name}, "I forget it. '#{msg.match[1]}'"
-      else
-        robot.send {room: msg.message.user.name}, "I don't know such a reaction."
+      removeReaction(msg.match[1], (err, res) ->
+        if err
+          console.log("Removing ERROR: " + err)
+        else
+          console.log("Removing: " + res)
+          if res > 0
+            robot.send {room: msg.message.user.name}, "I forget it. '#{msg.match[1]}'" #個人チャットに発言
+          else
+            robot.send {room: msg.message.user.name}, "I don't know such a reaction."  #個人チャットに発言
+      )
+#      resultIndex = reactions.indexOf(msg.match[1])
 
   # list
   robot.hear /l(?:i)?s(?:t)? reaction/i, (msg) ->

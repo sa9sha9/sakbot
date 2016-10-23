@@ -69,6 +69,14 @@ tenki = (robot, envelope, city) ->
            ちなみに、#{json['location']['prefecture']} #{json['location']['city']}市の天気は「#{json['forecasts'][0]['telop']}」最高気温は #{json['forecasts'][1]['temperature']['max']['celsius']}度, 最低気温 #{json['forecasts'][1]['temperature']['min']['celsius']}度です。
       """
     robot.send envelope, msgs
+    starwarsTenki(robot)
+
+#starwarsTenki(robot) ->
+#  key = 'starwars_planet';
+#  planets = [
+#    {name: 'ナブー',}
+#  ];
+
 
     ### more detail ###
 #    robot.send envelope, 'もっと詳しく聞きたいですか？'

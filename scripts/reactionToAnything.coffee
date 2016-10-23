@@ -19,6 +19,7 @@ url   = require "url"
 
 module.exports = (robot) ->
   key = 'reactions'
+  quietFlag = 0
   envelope = {room: process.env.SEND_ROOM}
 
   ### REDIS Setting ###
@@ -57,9 +58,10 @@ module.exports = (robot) ->
   robot.hear /http(?:s)?:\/\/(.*)$/i, (msg) ->
     if /(.*)wikipedia(.*)/.test(msg.match[1]) # wikipediaの時のみ
       getTitleOfWikipedia(msg.match[0], msg)
-    else
+    else if quietFlag is 0
       getReactions((err, res) ->
-        msg.send "@#{msg.message.user.name}: #{msg.random(res)}"
+        console.log Math.random()
+        msg.send "@#{msg.message.user.name}: #{msg.random(res)}" if Math.random() > 0.5
       )
 
   # wikipediaのリンクが貼られた時に発火
@@ -67,6 +69,17 @@ module.exports = (robot) ->
     cheerio.fetch(url, (err, $, header) ->
       msg.send $('title').text()
     )
+
+  # 任意off
+  robot.respond /(?:.*)shut up(?:.*)/i, (msg) ->
+    quietFlag = 1
+    msg.send "かしこまりました。 静かにしてます。"
+    console.log quietFlag
+
+  robot.respond /(?:.*)bother us(?:.*)/i, (msg) ->
+    quietFlag = 0
+    msg.send "かしこまりました！ しゃべります！"
+    console.log quietFlag
 
   ### データベース操作 ###
   # Initial add (万が一のとき用)

@@ -5,6 +5,8 @@
 #  (d3-g0) add reaction (.*) : adding new reaction
 #  (d3-g0) del reaction (.*) : delete reaction
 #  (d3-g0) ls reaction       : reaction list
+#   d3-g0  bother us         : d3-g0 will bother us
+#   d3-g0  shut up           : d3-g0 will be quiet
 #
 # Author:
 #  @sak39

@@ -16,8 +16,8 @@
 #   cron http://qiita.com/mats116/items/0164b37ffaa90f03f2a0
 
 
-module.exports = (robot) ->
-  envelope = room: process.env.SEND_ROOM
+#module.exports = (robot) ->
+#  envelope = room: process.env.SEND_ROOM
 # Seconds: 0-59
 # Minutes: 0-59
 # Hours: 0-23
@@ -39,37 +39,38 @@ module.exports = (robot) ->
 #  , null, true, 'Asia/Tokyo'
 #  ).start()
 
-  robot.listen(
-    (msg) ->
+# @@@
+  #robot.listen(
+  #  (msg) ->
       # Dateインスタンスを生成(時差を考慮)
-      offset = 9
-      d = new Date();
-      nd = new Date(d.getTime() + (3600000 * offset))
+      #offset = 9
+      #d = new Date();
+      #nd = new Date(d.getTime() + (3600000 * offset))
 
-      regex = /名古屋(.*)/
+      #regex = /名古屋(.*)/
       #ユーザ名が'uran'でAM7時台に発言して、なおかつその発言に'名古屋'が含まれているもの
-      msg.user.name is 'uran' and (nd.getHours()) is 7 and regex.test(msg.text)
-#      msg.user.name is 'saku' and (nd.getHours()) is 13
-#      pattern = /(.*)emit(.*)/
-#      msg.user.name is 'Shell' and pattern.test(msg.text)
-    (res) ->
-      console.log 'tenki emit'
-      tenki(robot, envelope, '100010')
-  )
+      #msg.user.name is 'uran' and (nd.getHours()) is 7 and regex.test(msg.text)
+#     # msg.user.name is 'saku' and (nd.getHours()) is 13
+#     # pattern = /(.*)emit(.*)/
+#     # msg.user.name is 'Shell' and pattern.test(msg.text)
+    #(res) ->
+    #  console.log 'tenki emit'
+    #  tenki(robot, envelope, '100010')
+  #)
 
-tenki = (robot, envelope, city) ->
-  request = robot.http('http://weather.livedoor.com/forecast/webservice/json/v1?city='+city).get()
-  request (err, res, body) ->
-    json = JSON.parse body
-    console.log json
-    # how to make a link at slack
-    # @link https://api.slack.com/docs/formatting#linking_to_urls
-    # #{json['link']}
-    msgs ="""
-           ちなみに、#{json['location']['prefecture']} #{json['location']['city']}市の天気は「#{json['forecasts'][0]['telop']}」最高気温は #{json['forecasts'][1]['temperature']['max']['celsius']}度, 最低気温 #{json['forecasts'][1]['temperature']['min']['celsius']}度です。
-      """
-    robot.send envelope, msgs
-    starwarsTenki(robot)
+#tenki = (robot, envelope, city) ->
+#  request = robot.http('http://weather.livedoor.com/forecast/webservice/json/v1?city='+city).get()
+#  request (err, res, body) ->
+#    json = JSON.parse body
+#    console.log json
+#    # how to make a link at slack
+#    # @link https://api.slack.com/docs/formatting#linking_to_urls
+#    # #{json['link']}
+#    msgs ="""
+#           ちなみに、#{json['location']['prefecture']} #{json['location']['city']}市の天気は「#{json['forecasts'][0]['telop']}」最高気温は #{json['forecasts'][1]['temperature']['max']['celsius']}度, 最低気温 #{json['forecasts'][1]['temperature']['min']['celsius']}度です。
+#      """
+#    robot.send envelope, msgs
+#    starwarsTenki(robot)
 
 #starwarsTenki(robot) ->
 #  key = 'starwars_planet';
@@ -78,7 +79,7 @@ tenki = (robot, envelope, city) ->
 #  ];
 
 
-    ### more detail ###
+### more detail ###
 #    robot.send envelope, 'もっと詳しく聞きたいですか？'
 #    flag = 0
 #    robot.hear '/yes/i', (msg) ->

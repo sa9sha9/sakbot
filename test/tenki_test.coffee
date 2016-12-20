@@ -3,9 +3,9 @@ chai = require 'chai'
 
 expect = chai.expect
 
-helper = new Helper('../scripts/tenki2.coffee')
+helper = new Helper('../scripts/tenki.coffee')
 
-describe 'tenki2', ->
+describe 'tenki', ->
   beforeEach ->
     @room = helper.createRoom()
 

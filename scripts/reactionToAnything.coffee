@@ -60,16 +60,17 @@ module.exports = (robot) ->
   robot.hear /http(?:s)?:\/\/(.*)$/i, (msg) ->
     if /(.*)wikipedia(.*)/.test(msg.match[1]) # wikipediaの時のみ
       getTitleOfWikipedia(msg.match[0], msg)
-    else if quietFlag is 0
+    else if quietFlag is 0 and msg.message.user.name is 'saku'
       getReactions((err, res) ->
         console.log Math.random()
-        msg.send "@#{msg.message.user.name}: #{msg.random(res)}" if Math.random() > 0.5
+#        msg.send "@#{msg.message.user.name}: #{msg.random(res)}" if Math.random() > 0.5
+        msg.send "@#{msg.message.user.name}: #{msg.random(res)}"
       )
 
   # wikipediaのリンクが貼られた時に発火
   getTitleOfWikipedia = (url, msg) ->
     cheerio.fetch(url, (err, $, header) ->
-      msg.send $('title').text()
+      msg.send "#{$('title').text()} っすね"
     )
 
   # 任意off

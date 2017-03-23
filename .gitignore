@@ -41,3 +41,4 @@ jspm_packages
 
 # Custom
 dump.rdb
+private/**

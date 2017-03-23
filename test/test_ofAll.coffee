@@ -3,21 +3,20 @@ chai = require 'chai'
 
 expect = chai.expect
 
-helper = new Helper('../scripts/noticeTsConnection.coffee')
+helper = new Helper('../scripts/test.coffee')
 
-describe 'ts', ->
+describe 'all', ->
   beforeEach ->
     @room = helper.createRoom()
 
   afterEach ->
     @room.destroy()
 
-#  it 'responds to test', ->
-#    @room.user.say('alice', '@hubot test').then =>
-#      expect(@room.messages).to.eql [
-#        ['alice', '@hubot test']
-#        ['hubot', '@alice \'alice\' comes in TS']
-#      ]
+  it 'responds to all', ->
+    @room.user.say('alice', '@hubot test').then =>
+      expect(@room.messages).to.eql [
+        ['alice', '@hubot test']
+      ]
 
 #  it 'responds to ts in', ->
 #    @room.user.say('alice', '@hubot ts in').then =>

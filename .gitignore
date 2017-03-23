@@ -42,3 +42,4 @@ jspm_packages
 # Custom
 dump.rdb
 private/**
+scripts/test.coffee

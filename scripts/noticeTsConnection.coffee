@@ -61,7 +61,8 @@ module.exports = (robot) ->
 #    dstHost: 'ts3.l2tp.org', # target hostname
     dstHost: env.TS_HOST, # target hostname
     localHost: 'localhost',
-    localPort: 10011
+    localPort: 10011,
+    keepAlive:true
   }
 
   console.log config #@@
